@@ -515,7 +515,7 @@ public class Flocker extends Follower {
 	// passed percept list.
         for(int i=0; i< ps.size(); i++) {
         	
-        	System.out.println("Passed " + ps.get(i).getObjectCategory().name() + "[ distance: " + ps.get(i).getDistance() + ", angle: " + ps.get(i).getAngle() + " ]");
+        	System.out.println("Passed " + ps.get(i).getObjectCategory().name() + "[ distance: " + ps.get(i).getDistance() + ", angle: " + ps.get(i).getAngle() + ", orientation: " + ps.get(i).getOrientation() + " ]");
         	if(ps.get(i).getObjectCategory().name().equals("OBSTACLE")) {
         		if(ps.get(i).getDistance() <= DEFAULT_CLEARANCE_DISTANCE && Math.abs(ps.get(i).getAngle()) <= DEFAULT_CLEARANCE_ANGLE) {
             		if(ps.get(i).getAngle()< 0) {
@@ -552,10 +552,19 @@ public class Flocker extends Follower {
 	// based on the passed percept list  
         for(int i=0; i< ps.size(); i++) {
         	
-        	System.out.println("Passed " + ps.get(i).getObjectCategory().name() + "[ distance: " + ps.get(i).getDistance() + ", angle: " + ps.get(i).getAngle() + " ]");
+        	System.out.println("Passed " + ps.get(i).getObjectCategory().name() + "[ distance: " + ps.get(i).getDistance() + ", angle: " + ps.get(i).getAngle() + ", orientation: " + ps.get(i).getOrientation() + " ]");
         	
         	if(ps.get(i).getObjectCategory().name().equals("BOID")) {
-        		if(ps.get(i).getDistance() <= DEFAULT_SEPARATION_DISTANCE && ps.get(i).getAngle() <= 0) {
+        		if(ps.get(i).getDistance()< (DEFAULT_SEPARATION_DISTANCE/10) && ps.get(i).getAngle() <= 0) {
+        			//stop shoving the boids outwards when too close
+        			sf.fy += (SEPARATION_WEIGHT *2) / ps.get(i).getDistance();
+        			sf.fx += (SEPARATION_WEIGHT *2) / ps.get(i).getDistance();
+        		}
+        		else if(ps.get(i).getDistance()< (DEFAULT_SEPARATION_DISTANCE/10) && ps.get(i).getAngle() >= 0) {
+        			sf.fy -= (SEPARATION_WEIGHT*2) / ps.get(i).getDistance();
+        			sf.fx -= (SEPARATION_WEIGHT*2) / ps.get(i).getDistance();
+        		}
+        		else if(ps.get(i).getDistance() <= DEFAULT_SEPARATION_DISTANCE && ps.get(i).getAngle() <= 0) {
             		Percept p = ps.get(i);
             		double y = (SEPARATION_WEIGHT * 5) / ps.get(i).getDistance();
             		sf.fy += y;
@@ -589,18 +598,18 @@ public class Flocker extends Follower {
     	
     	for(int i=0; i< ps.size(); i++) {
     		
-    		System.out.println("Passed " + ps.get(i).getObjectCategory().name() + "[ distance: " + ps.get(i).getDistance() + ", angle: " + ps.get(i).getAngle() + " ]");
+    		System.out.println("Passed " + ps.get(i).getObjectCategory().name() + "[ distance: " + ps.get(i).getDistance() + ", angle: " + ps.get(i).getAngle() + ", orientation: " + ps.get(i).getOrientation() + " ]");
     		
-    		if(ps.get(i).getObjectCategory().name().equals("BOID")){
+    		if(ps.get(i).getObjectCategory().name().equals("BOID") && Math.abs(ps.get(i).getAngle())<90 ){
     			if(ps.get(i).getDistance() <= DEFAULT_DETECTION_DISTANCE && ps.get(i).getAngle() > 0  && ps.get(i).getDistance() >= DEFAULT_SEPARATION_DISTANCE) {
-            		xflock -= ps.get(i).getOrientation()/CENTERING_WEIGHT;
-            		yflock -= ps.get(i).getOrientation()/CENTERING_WEIGHT;
+            		xflock -= ps.get(i).getOrientation()/ALIGNMENT_WEIGHT;
+            		yflock -= ps.get(i).getOrientation()/ALIGNMENT_WEIGHT;
             		numBoids++;			
     				
             	}
             	else if(ps.get(i).getDistance() <= DEFAULT_DETECTION_DISTANCE && ps.get(i).getAngle() <= 0  && ps.get(i).getDistance() >= DEFAULT_SEPARATION_DISTANCE){
-            		xflock += ps.get(i).getOrientation()/CENTERING_WEIGHT;
-            		yflock += ps.get(i).getOrientation()/CENTERING_WEIGHT;
+            		xflock += ps.get(i).getOrientation()/ALIGNMENT_WEIGHT;
+            		yflock += ps.get(i).getOrientation()/ALIGNMENT_WEIGHT;
             		numBoids++;
 
             	}
@@ -626,7 +635,7 @@ public class Flocker extends Follower {
         int numBoids = 1;
         for(int i=0; i<ps.size(); i++) {
         	
-        	System.out.println("Passed " + ps.get(i).getObjectCategory().name() + "[ distance: " + ps.get(i).getDistance() + ", angle: " + ps.get(i).getAngle() + " ]");
+        	System.out.println("Passed " + ps.get(i).getObjectCategory().name() + "[ distance: " + ps.get(i).getDistance() + ", angle: " + ps.get(i).getAngle() + ", orientation: " + ps.get(i).getOrientation() + " ]");
         	
         	if(ps.get(i).getObjectCategory().name().equals("BOID")) {
         		int df =0;
@@ -660,7 +669,7 @@ public class Flocker extends Follower {
 	// a particular target in the passed percept list    
     	for(int i=0; i< ps.size(); i++) {
     		
-    		System.out.println("Passed " + ps.get(i).getObjectCategory().name() + "[ distance: " + ps.get(i).getDistance() + ", angle: " + ps.get(i).getAngle() + " ]");
+    		System.out.println("Passed " + ps.get(i).getObjectCategory().name() + "[ distance: " + ps.get(i).getDistance() + ", angle: " + ps.get(i).getAngle() + ", orientation: " + ps.get(i).getOrientation() + " ]");
     		
     		if(ps.get(i).getObjectCategory().name().equals("LIGHT")){
     			if(ps.get(i).getDistance() <= DEFAULT_DETECTION_DISTANCE && ps.get(i).getAngle() > 0) {
