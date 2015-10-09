@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<!-- Test file: Flocker Project, Case 6 -->
-<!-- Three boids go around an obstacle to reach a light -->
+<!-- Test file: Flocker Project, Story -->
+<!-- Two boids circle a light and crisscross each other -->
 
 <world xmlns="http://perceptualscience.rutgers.edu/flocking"
    width="500" height="500" time="100" debug="true">
@@ -9,12 +9,11 @@
               light="true" clear="true" evade="true" align="true" center="true" 
               />
    </defaults>
-   <flocker x="100" y="100" heading="0" />
-   <flocker x="150" y="130" heading="0" />
-   <flocker x="100" y="160" heading="0" />
-   <flocker x="140" y="100" heading="0" />
+   <flocker x="250" y="200" heading="0" />
+   <flocker x="250" y="300" heading="0" />
+   
 
-
+	<light x="250" y="250" />
 
 
 </world>

@@ -657,14 +657,14 @@ public class Flocker extends Follower {
     		}
     		else if(ps.get(i).getObjectCategory().name().equals("BOID") && Math.abs(ps.get(i).getAngle())<90) {
     			if(ps.get(i).getDistance() <= flocking.detectionDistance && ps.get(i).getAngle() > 0  && ps.get(i).getDistance() >= DEFAULT_SEPARATION_DISTANCE) {
-            		xflock -= (ps.get(i).getOrientation() *4)/flocking.alignmentWeight;
-            		yflock -= (ps.get(i).getOrientation()*4)/flocking.alignmentWeight;
+            		xflock -= (ps.get(i).getOrientation() *3.5)/flocking.alignmentWeight;
+            		yflock -= (ps.get(i).getOrientation()*3.5)/flocking.alignmentWeight;
             		numBoids++;			
     				
             	}
             	else if(ps.get(i).getDistance() <= DEFAULT_DETECTION_DISTANCE && ps.get(i).getAngle() <= 0  && ps.get(i).getDistance() >= DEFAULT_SEPARATION_DISTANCE){
-            		xflock += (ps.get(i).getOrientation()*4)/flocking.alignmentWeight;
-            		yflock += (ps.get(i).getOrientation()*4)/flocking.alignmentWeight;
+            		xflock += (ps.get(i).getOrientation()*3.5)/flocking.alignmentWeight;
+            		yflock += (ps.get(i).getOrientation()*3.5)/flocking.alignmentWeight;
             		numBoids++;
 
             	}
@@ -716,13 +716,13 @@ public class Flocker extends Follower {
         	else if(ps.get(i).getObjectCategory().name().equals("BOID")) {
         		//no goal
         		if(ps.get(i).getDistance() <= flocking.detectionDistance && ps.get(i).getDistance() >= flocking.separationDistance && ps.get(i).getAngle() > 0) {
-        			xforce += flocking.centeringWeight /(ps.get(i).getDistance() /12);
-        			yforce += flocking.centeringWeight/(ps.get(i).getDistance() /12);
+        			xforce += flocking.centeringWeight /(ps.get(i).getDistance() /11.5);
+        			yforce += flocking.centeringWeight/(ps.get(i).getDistance() /11.5);
         			numBoids++;
         		}
         		else if(ps.get(i).getDistance() <= flocking.detectionDistance  && ps.get(i).getDistance() >= flocking.separationDistance && ps.get(i).getAngle() <= 0) {
-        			xforce -= flocking.centeringWeight/(ps.get(i).getDistance() /12);
-        			yforce -= flocking.centeringWeight/(ps.get(i).getDistance() /12);
+        			xforce -= flocking.centeringWeight/(ps.get(i).getDistance() /11.5);
+        			yforce -= flocking.centeringWeight/(ps.get(i).getDistance() /11.5);
         			numBoids++;
         		}
         	}
@@ -764,9 +764,7 @@ public class Flocker extends Follower {
             		double x = (flocking.followWeight *10) / ps.get(i).getDistance();
             		ff.fx -= x;
             	}
-            	else {
-            		int fd = 0;
-            	}
+
     		}
         	
         }

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<world debug="true" height="500" time="100" width="500" xmlns="http://perceptualscience.rutgers.edu/flocking">
+<defaults>
+<flocker align="true" center="true" clear="true" debug="true" evade="true" follow="true"/>
+</defaults>
+<light x="322" y="269"/>
+<flocker heading="0" x="427" y="443"/>
+<flocker heading="0" x="133" y="486"/>
+<flocker heading="0" x="72" y="283"/>
+<flocker heading="0" x="176" y="318"/>
+<model-predator heading="0" x="29" y="128"/>
+</world>
