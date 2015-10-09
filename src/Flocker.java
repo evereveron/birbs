@@ -640,13 +640,13 @@ public class Flocker extends Follower {
         	if(ps.get(i).getObjectCategory().name().equals("BOID")) {
         		int df =0;
         		if(ps.get(i).getDistance() <= DEFAULT_DETECTION_DISTANCE && ps.get(i).getDistance() >= DEFAULT_SEPARATION_DISTANCE && ps.get(i).getAngle() > 0) {
-        			xforce += ALIGNMENT_WEIGHT;
-        			yforce += ALIGNMENT_WEIGHT;
+        			xforce += CENTERING_WEIGHT /2;
+        			yforce += CENTERING_WEIGHT/2;
         			numBoids++;
         		}
         		else if(ps.get(i).getDistance() <= DEFAULT_DETECTION_DISTANCE  && ps.get(i).getDistance() >= DEFAULT_SEPARATION_DISTANCE && ps.get(i).getAngle() <= 0) {
-        			xforce -= ALIGNMENT_WEIGHT;
-        			yforce -= ALIGNMENT_WEIGHT;
+        			xforce -= CENTERING_WEIGHT/2;
+        			yforce -= CENTERING_WEIGHT/2;
         			numBoids++;
         		}
         	}
