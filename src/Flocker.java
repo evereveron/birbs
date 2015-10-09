@@ -517,19 +517,19 @@ public class Flocker extends Follower {
         	
         	System.out.println("Passed " + ps.get(i).getObjectCategory().name() + "[ distance: " + ps.get(i).getDistance() + ", angle: " + ps.get(i).getAngle() + ", orientation: " + ps.get(i).getOrientation() + " ]");
         	if(ps.get(i).getObjectCategory().name().equals("OBSTACLE")) {
-        		if(ps.get(i).getDistance() <= DEFAULT_CLEARANCE_DISTANCE && Math.abs(ps.get(i).getAngle()) <= DEFAULT_CLEARANCE_ANGLE) {
+        		if(ps.get(i).getDistance() <= flocking.clearance && Math.abs(ps.get(i).getAngle()) <= flocking.cone) {
             		if(ps.get(i).getAngle()< 0) {
             			Percept p = ps.get(i);
-                		double y = (OBSTACLE_WEIGHT *10) / ps.get(i).getDistance();
+                		double y = (flocking.obstacleWeight *10) / ps.get(i).getDistance();
                 		mf.fy += y;
-                		double x = (OBSTACLE_WEIGHT * 10) /ps.get(i).getDistance();
+                		double x = (flocking.obstacleWeight * 10) /ps.get(i).getDistance();
                 		mf.fx += x;
             		}
             		else {
             			Percept p = ps.get(i);
-                		double y = (OBSTACLE_WEIGHT* 10)/ps.get(i).getDistance() ;
+                		double y = (flocking.obstacleWeight* 10)/ps.get(i).getDistance() ;
                 		mf.fy -= y;
-                		double x = (OBSTACLE_WEIGHT * 10)/ps.get(i).getDistance();
+                		double x = (flocking.obstacleWeight * 10)/ps.get(i).getDistance();
                 		mf.fx -= x;
             		}
             		
@@ -555,27 +555,27 @@ public class Flocker extends Follower {
         	System.out.println("Passed " + ps.get(i).getObjectCategory().name() + "[ distance: " + ps.get(i).getDistance() + ", angle: " + ps.get(i).getAngle() + ", orientation: " + ps.get(i).getOrientation() + " ]");
         	
         	if(ps.get(i).getObjectCategory().name().equals("BOID")) {
-        		if(ps.get(i).getDistance()< (DEFAULT_SEPARATION_DISTANCE/10) && ps.get(i).getAngle() <= 0) {
+        		if(ps.get(i).getDistance()< (flocking.separationDistance/10) && ps.get(i).getAngle() <= 0) {
         			//stop shoving the boids outwards when too close
-        			sf.fy += (SEPARATION_WEIGHT *2) / ps.get(i).getDistance();
-        			sf.fx += (SEPARATION_WEIGHT *2) / ps.get(i).getDistance();
+        			sf.fy += (flocking.separationWeight *2) / ps.get(i).getDistance();
+        			sf.fx += (flocking.separationWeight *2) / ps.get(i).getDistance();
         		}
-        		else if(ps.get(i).getDistance()< (DEFAULT_SEPARATION_DISTANCE/10) && ps.get(i).getAngle() >= 0) {
-        			sf.fy -= (SEPARATION_WEIGHT*2) / ps.get(i).getDistance();
-        			sf.fx -= (SEPARATION_WEIGHT*2) / ps.get(i).getDistance();
+        		else if(ps.get(i).getDistance()< (flocking.separationDistance/10) && ps.get(i).getAngle() >= 0) {
+        			sf.fy -= (flocking.separationWeight*2) / ps.get(i).getDistance();
+        			sf.fx -= (flocking.separationWeight*2) / ps.get(i).getDistance();
         		}
-        		else if(ps.get(i).getDistance() <= DEFAULT_SEPARATION_DISTANCE && ps.get(i).getAngle() <= 0) {
+        		else if(ps.get(i).getDistance() <= flocking.separationDistance && ps.get(i).getAngle() <= 0) {
             		Percept p = ps.get(i);
-            		double y = (SEPARATION_WEIGHT * 5) / ps.get(i).getDistance();
+            		double y = (flocking.separationWeight * 5) / ps.get(i).getDistance();
             		sf.fy += y;
-            		double x = (SEPARATION_WEIGHT * 5)  / ps.get(i).getDistance();
+            		double x = (flocking.separationWeight * 5)  / ps.get(i).getDistance();
             		sf.fx += x;
             	}
-            	else if(ps.get(i).getDistance() <= DEFAULT_SEPARATION_DISTANCE && ps.get(i).getAngle() > 0){
+            	else if(ps.get(i).getDistance() <= flocking.separationDistance && ps.get(i).getAngle() > 0){
             		Percept p = ps.get(i);
-            		double y = (SEPARATION_WEIGHT * 5) / ps.get(i).getDistance();
+            		double y = (flocking.separationWeight * 5) / ps.get(i).getDistance();
             		sf.fy -= y;
-            		double x = (SEPARATION_WEIGHT * 5) / ps.get(i).getDistance();
+            		double x = (flocking.separationWeight * 5) / ps.get(i).getDistance();
             		sf.fx -= x;
             	}
         	}
@@ -601,15 +601,15 @@ public class Flocker extends Follower {
     		System.out.println("Passed " + ps.get(i).getObjectCategory().name() + "[ distance: " + ps.get(i).getDistance() + ", angle: " + ps.get(i).getAngle() + ", orientation: " + ps.get(i).getOrientation() + " ]");
     		
     		if(ps.get(i).getObjectCategory().name().equals("BOID") && Math.abs(ps.get(i).getAngle())<90 ){
-    			if(ps.get(i).getDistance() <= DEFAULT_DETECTION_DISTANCE && ps.get(i).getAngle() > 0  && ps.get(i).getDistance() >= DEFAULT_SEPARATION_DISTANCE) {
-            		xflock -= ps.get(i).getOrientation()/ALIGNMENT_WEIGHT;
-            		yflock -= ps.get(i).getOrientation()/ALIGNMENT_WEIGHT;
+    			if(ps.get(i).getDistance() <= flocking.detectionDistance && ps.get(i).getAngle() > 0  && ps.get(i).getDistance() >= DEFAULT_SEPARATION_DISTANCE) {
+            		xflock -= ps.get(i).getOrientation()/flocking.alignmentWeight;
+            		yflock -= ps.get(i).getOrientation()/flocking.alignmentWeight;
             		numBoids++;			
     				
             	}
             	else if(ps.get(i).getDistance() <= DEFAULT_DETECTION_DISTANCE && ps.get(i).getAngle() <= 0  && ps.get(i).getDistance() >= DEFAULT_SEPARATION_DISTANCE){
-            		xflock += ps.get(i).getOrientation()/ALIGNMENT_WEIGHT;
-            		yflock += ps.get(i).getOrientation()/ALIGNMENT_WEIGHT;
+            		xflock += ps.get(i).getOrientation()/flocking.alignmentWeight;
+            		yflock += ps.get(i).getOrientation()/flocking.alignmentWeight;
             		numBoids++;
 
             	}
@@ -639,14 +639,14 @@ public class Flocker extends Follower {
         	
         	if(ps.get(i).getObjectCategory().name().equals("BOID")) {
         		int df =0;
-        		if(ps.get(i).getDistance() <= DEFAULT_DETECTION_DISTANCE && ps.get(i).getDistance() >= DEFAULT_SEPARATION_DISTANCE && ps.get(i).getAngle() > 0) {
-        			xforce += CENTERING_WEIGHT /2;
-        			yforce += CENTERING_WEIGHT/2;
+        		if(ps.get(i).getDistance() <= flocking.detectionDistance && ps.get(i).getDistance() >= flocking.separationDistance && ps.get(i).getAngle() > 0) {
+        			xforce += flocking.centeringWeight /2;
+        			yforce += flocking.centeringWeight/2;
         			numBoids++;
         		}
-        		else if(ps.get(i).getDistance() <= DEFAULT_DETECTION_DISTANCE  && ps.get(i).getDistance() >= DEFAULT_SEPARATION_DISTANCE && ps.get(i).getAngle() <= 0) {
-        			xforce -= CENTERING_WEIGHT/2;
-        			yforce -= CENTERING_WEIGHT/2;
+        		else if(ps.get(i).getDistance() <= flocking.detectionDistance  && ps.get(i).getDistance() >= flocking.separationDistance && ps.get(i).getAngle() <= 0) {
+        			xforce -= flocking.centeringWeight/2;
+        			yforce -= flocking.centeringWeight/2;
         			numBoids++;
         		}
         	}
@@ -672,18 +672,18 @@ public class Flocker extends Follower {
     		System.out.println("Passed " + ps.get(i).getObjectCategory().name() + "[ distance: " + ps.get(i).getDistance() + ", angle: " + ps.get(i).getAngle() + ", orientation: " + ps.get(i).getOrientation() + " ]");
     		
     		if(ps.get(i).getObjectCategory().name().equals("LIGHT")){
-    			if(ps.get(i).getDistance() <= DEFAULT_DETECTION_DISTANCE && ps.get(i).getAngle() > 0) {
+    			if(ps.get(i).getDistance() <= flocking.detectionDistance && ps.get(i).getAngle() > 0) {
             		Percept p = ps.get(i);
-            		double y = (LIGHT_WEIGHT *10) / ps.get(i).getDistance();
+            		double y = (flocking.followWeight *10) / ps.get(i).getDistance();
             		ff.fy += y;
-            		double x = (LIGHT_WEIGHT * 10) / ps.get(i).getDistance();
+            		double x = (flocking.followWeight * 10) / ps.get(i).getDistance();
             		ff.fx += x;
             	}
-            	else if(ps.get(i).getDistance() <= DEFAULT_DETECTION_DISTANCE && ps.get(i).getAngle() <= 0){
+            	else if(ps.get(i).getDistance() <= flocking.detectionDistance && ps.get(i).getAngle() <= 0){
             		Percept p = ps.get(i);
-            		double y = (LIGHT_WEIGHT *10) / ps.get(i).getDistance();
+            		double y = (flocking.followWeight *10) / ps.get(i).getDistance();
             		ff.fy -= y;
-            		double x = (LIGHT_WEIGHT *10) / ps.get(i).getDistance();
+            		double x = (flocking.followWeight *10) / ps.get(i).getDistance();
             		ff.fx -= x;
             	}
             	else {
